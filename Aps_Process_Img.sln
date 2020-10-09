@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aps_Process_Img", "Aps_Process_Img\Aps_Process_Img.csproj", "{A8481393-8023-4179-84E8-3D620ADC7235}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encriptador", "Encriptador\Encriptador.csproj", "{3B47FFFA-C1C8-4200-BBEE-2314DB0C8F68}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8481393-8023-4179-84E8-3D620ADC7235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8481393-8023-4179-84E8-3D620ADC7235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8481393-8023-4179-84E8-3D620ADC7235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8481393-8023-4179-84E8-3D620ADC7235}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B47FFFA-C1C8-4200-BBEE-2314DB0C8F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B47FFFA-C1C8-4200-BBEE-2314DB0C8F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B47FFFA-C1C8-4200-BBEE-2314DB0C8F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B47FFFA-C1C8-4200-BBEE-2314DB0C8F68}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6749AD77-A355-4759-B8A8-BE2C6F700CEF}
+	EndGlobalSection
+EndGlobal
