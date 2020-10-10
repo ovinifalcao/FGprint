@@ -11,7 +11,7 @@ namespace Aps_Process_Img.Modules
     {
         private const string IDSK = "A&Adt8*a8rJEIYR574$%";
         private readonly string PastaLog = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Roaming\\FGcompare";
-        private readonly string ArquivoLog = PastaLog + "\\log.json";
+        private readonly string ArquivoLog =  "\\log.json";
 
 
         public void SalvaUsuario(Models.Usuario User)

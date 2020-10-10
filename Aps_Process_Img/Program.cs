@@ -9,8 +9,24 @@ namespace Aps_Process_Img
 
         static void Main(string[] args)
         {
-            Saudacao();
-            MenuPrincipal();
+            var imgbit = Modules.TratamentoDeImagem.MontaAray(new Bitmap(Image.FromFile(@"C:\Users\andre.falcao\Pictures\fingerprint102.jpg")));
+            //var histograma = Modules.TratamentoDeImagem.MontaHistograma(imgbit);
+
+            var eu = new Bitmap(imgbit.GetLength(0), imgbit.GetLength(1));
+            Graphics flagGraphics = Graphics.FromImage(eu);
+
+            for (int w = 0; w < imgbit.GetLength(0) - 1; w++)
+            {
+                for (int h = 0; h < imgbit.GetLength(1) - 1; h++)
+                {
+                   // if(imgbit[w,h] < 200) 
+                        flagGraphics.FillRectangle( new SolidBrush(Color.FromArgb(255, imgbit[w, h], imgbit[w, h], imgbit[w, h])), w, h, 1, 1);
+                }
+            }
+
+            eu.Save(@"C:\Users\andre.falcao\Pictures\vishiecol.jpg");
+            //Saudacao();
+            //MenuPrincipal();
         }
 
         static void Saudacao()
