@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
 namespace Aps_Process_Img.Modules
 {
-    public class TratamentoDeImagem
+    public class Tratamento
     {
 
         public static byte[,] MontaAray(Bitmap img)
@@ -28,15 +26,15 @@ namespace Aps_Process_Img.Modules
             return byte.Parse(((ByteColor.R + ByteColor.B + ByteColor.G) / 3).ToString());
         }
 
-        public static List<ItemHistograma> MontaHistograma(byte[,] ByteImg)
+        public static Dictionary<byte, int> MontaHistograma(byte[,] ByteImg)
         {
             return (from b in LinearizarImagem(ByteImg)
                     group b by b into bcount
-                   select new ItemHistograma 
-                   { 
-                       TomCinza = bcount.Key, 
-                       IntensidadeOcorrencia = bcount.Count() 
-                   }).ToList();
+                    select new Models.ItemHistograma
+                    {
+                        TomCinza = bcount.Key,
+                        IntensidadeOcorrencia = bcount.Count()
+                    }).ToDictionary(d => d.TomCinza, d => d.IntensidadeOcorrencia);
         }
 
         public static byte[] LinearizarImagem(byte[,] ByteImg)

@@ -1,5 +1,5 @@
 ﻿
-namespace Aps_Process_Img
+namespace Aps_Process_Img.Models
 {
     public class ItemHistograma
     {
