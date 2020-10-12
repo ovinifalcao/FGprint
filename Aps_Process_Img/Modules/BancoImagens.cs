@@ -9,30 +9,34 @@ namespace Aps_Process_Img.Modules
 {
     class BancoImagens
     {
-        private const string IDSK = "A&Adt8*a8rJEIYR574$%";
-        private readonly string PastaLog = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Roaming\\FGcompare";
-        private readonly string ArquivoLog =  "\\log.json";
+        private static string IDSK = "f58dr5744tt54758$22fghy%egsd4211";
+        private static readonly string PastaLog = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Roaming\\FGcompare";
+        private static readonly string ArquivoLog = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Roaming\\FGcompare\\log.json";
 
 
-        public void SalvaUsuario(Models.Usuario User)
+        public static void Salvar(List<Models.Usuario> User)
         {
             Directory.CreateDirectory(PastaLog);
-            if (!File.Exists(ArquivoLog)) File.Create(ArquivoLog);
+            if (!File.Exists(ArquivoLog))
+            {
+                var fs = File.Create(ArquivoLog);
+                fs.Close();
+            }
 
-            var UsersPreExistentes = LerArquivo();
-            UsersPreExistentes.Add(User);
+            var UsersPreExistentes = Ler();
+            UsersPreExistentes.AddRange(User);
             EscreverArquivo(UsersPreExistentes);
         }
 
-        public List<Models.Usuario> LerArquivo()
+        public static List<Models.Usuario> Ler()
         {
             using (var sr = new StreamReader(ArquivoLog))
             {
                 var st = sr.ReadToEnd();
 
-                if (string.IsNullOrEmpty(st))
+                if (!string.IsNullOrEmpty(st))
                 {
-                    return (List<Models.Usuario>)JsonConvert.DeserializeObject(cls_Encriptador.Decriptar(IDSK, st));
+                    return JsonConvert.DeserializeObject<List<Models.Usuario>>(cls_Encriptador.Decriptar(IDSK, st));
                 }
 
                 return new List<Models.Usuario>();
@@ -40,7 +44,7 @@ namespace Aps_Process_Img.Modules
             }
         }
 
-        private void EscreverArquivo(List<Models.Usuario> ListaDeUsuarios)
+        private static void EscreverArquivo(List<Models.Usuario> ListaDeUsuarios)
         {
             using (var sw = new StreamWriter(ArquivoLog))
             {

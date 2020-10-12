@@ -10,57 +10,15 @@ namespace Aps_Process_Img
 
         static void Main(string[] args)
         {
-            var imgbit = Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(@"C:\Users\andre.falcao\Pictures\fingerprint102.jpg")));
-            //var imgbitA = Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(@"C:\Users\andre.falcao\Pictures\fingerprint102.jpg")));
-            //var imgbitb = Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(@"C:\Users\andre.falcao\Pictures\fingerprint102 (2).jpg")));
-            var imgbitc = Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(@"C:\Users\andre.falcao\Pictures\filename.jpg")));
-            //var imgbitd = Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(@"C:\Users\andre.falcao\Pictures\vishiecol.jpg")));
-            var imgbitf = Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(@"C:\Users\andre.falcao\Pictures\vishie.jpg")));
-            //var imgbitg = Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(@"C:\Users\andre.falcao\Pictures\cont.jpg")));
-            var imgbith = Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(@"C:\Users\andre.falcao\Pictures\cont3.jpg")));
-            var imgbiti = Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(@"C:\Users\andre.falcao\Pictures\vishie3.jpeg")));
-            //
-
-            var ts = new List<Models.Usuario>();
-            //ts.Add(new Models.Usuario() { NomeUsuario = "MesmaImagem", ImpressaoDigital = imgbitA });
-            //ts.Add(new Models.Usuario() { NomeUsuario = "MaisBrilho", ImpressaoDigital = imgbitb});
-            ts.Add(new Models.Usuario() { NomeUsuario = "OutraImagem", ImpressaoDigital = imgbitc });
-            //ts.Add(new Models.Usuario() { NomeUsuario = "MaisContrate(>255)", ImpressaoDigital = imgbitd });
-            ts.Add(new Models.Usuario() { NomeUsuario = "MenosConstraste(>200)", ImpressaoDigital = imgbitf });
-            //ts.Add(new Models.Usuario() { NomeUsuario = "PoucaPercaDedados", ImpressaoDigital = imgbitg });
-            //ts.Add(new Models.Usuario() { NomeUsuario = "GrandePercaDeDados", ImpressaoDigital = imgbith });
-            ts.Add(new Models.Usuario() { NomeUsuario = "MesmaImagemEm90Graus", ImpressaoDigital = imgbiti });
-
-
-            var XAD = Modules.Comparador.ComparaHistogramas(imgbit, ts);
-
-            foreach (Tuple<string, int> u in XAD)
+            try
             {
-                Console.WriteLine(u.Item1 + ", "  + u.Item2);
+                Saudacao();
+                MenuPrincipal();
             }
-
-            Console.Write(Modules.Comparador.CompararImagem(XAD, imgbit, ts));
-
-            //int A = Modules.Comparador.InserteccionarMatrizes(Modules.Comparador.BinarizarImagem(imgbit), Modules.Comparador.BinarizarImagem(imgbitA));
-            //var b = A >= ((imgbit.GetLength(0) * imgbit.GetLength(1)) * 0.85) ? true : false;
-
-            //var histograma = Modules.TratamentoDeImagem.MontaHistograma(imgbit);
-
-            //var eu = new Bitmap(imgbit.GetLength(0), imgbit.GetLength(1));
-            //Graphics flagGraphics = Graphics.FromImage(eu);
-
-            //for (int w = 0; w < imgbit.GetLength(0) - 1; w++)
-            //{
-            //    for (int h = 0; h < imgbit.GetLength(1) - 1; h++)
-            //    {
-            //       // if(imgbit[w,h] < 200) 
-            //            flagGraphics.FillRectangle( new SolidBrush(Color.FromArgb(255, imgbit[w, h], imgbit[w, h], imgbit[w, h])), w, h, 1, 1);
-            //    }
-            //}
-
-            //eu.Save(@"C:\Users\andre.falcao\Pictures\vishiecol.jpg");
-            //Saudacao();
-            //MenuPrincipal();
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         static void Saudacao()
@@ -81,8 +39,8 @@ namespace Aps_Process_Img
             {
                 Console.WriteLine("Digite o número de  uma das opções:");
                 Console.WriteLine("   1 - Cadastrar");
-                Console.WriteLine("   2 - Comparar (Modo de Testes)");
-                Console.WriteLine("   3 - Comparar (Modo Rápido)");
+                Console.WriteLine("   2 - Comparar");
+                Console.WriteLine("   3 - Listar todos usuários");
                 Console.WriteLine("   4 - Sair");
 
                 var MenuResult = int.Parse(Console.ReadLine());
@@ -94,11 +52,11 @@ namespace Aps_Process_Img
                         break;
 
                     case 2:
-                        CompararModoTeste();
+                        Comparar();
                         break;
 
                     case 3:
-                        ComparaModoRapido();
+                        Listar();
                         break;
 
                     case 4:
@@ -108,19 +66,96 @@ namespace Aps_Process_Img
             }
         }
 
-        private static void ComparaModoRapido()
+        private static void Listar()
         {
-            throw new NotImplementedException();
+            try
+            {
+                foreach(Models.Usuario U in Modules.BancoImagens.Ler())
+                {
+                    Console.WriteLine(string.Format("Usuário: {0} - Perfil: {1}", U.NomeUsuario, (int)U.CategoriaUser));
+                }
+
+                Console.WriteLine("");
+                Console.WriteLine("Pressione qualquer tecla para voltar");
+                Console.ReadKey();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
-        private static void CompararModoTeste()
+        private static void Comparar()
         {
-            throw new NotImplementedException();
+            try
+            {
+                Console.WriteLine("");
+                Console.WriteLine("Comparar!");
+                Console.WriteLine("Digite o caminho completo para imagem:");
+                var img = Console.ReadLine();
+
+                var Digital = Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(img)));
+                var LstImagens = Modules.BancoImagens.Ler();
+                var histg = Modules.Comparador.ComparaHistogramas(Digital, LstImagens);
+
+                var result = Modules.Comparador.CompararImagem(histg, Digital, LstImagens);
+                if (result != null)
+                {
+                    Console.WriteLine(string.Format("Acesso liberado para Usuário: {0} - Perfil: {1}", result.NomeUsuario, (int)result.CategoriaUser));
+                }
+                else
+                {
+                    Console.WriteLine("Digital não reconhecida");
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("Pressione qualquer tecla para voltar");
+            Console.ReadKey();
         }
 
         private static void CadastrarDigital()
         {
-            throw new NotImplementedException();
+            try
+            {
+                Console.WriteLine("");
+                Console.WriteLine("Cadastrar!");
+                Console.WriteLine("Digite o nome do usuário:");
+                var nome = Console.ReadLine();
+                Console.WriteLine("");
+
+                Console.WriteLine("Digite o número do perfil de acesso:");
+                Console.WriteLine("    1 - Público");
+                Console.WriteLine("    2 - Diretor");
+                Console.WriteLine("    3 - Ministro");
+                var nivel = int.Parse(Console.ReadLine());
+                Console.WriteLine("");
+
+                Console.WriteLine("Digite o caminho completo para imagem:");
+                var img = Console.ReadLine();
+                Console.WriteLine("");
+
+                Modules.BancoImagens.Salvar(new List<Models.Usuario>()
+                {
+                    new Models.Usuario
+                    (nome,
+                     Modules.Tratamento.MontaAray(new Bitmap(Image.FromFile(img))),
+                     (Models.Usuario.Categoria)nivel)
+                });
+                Console.WriteLine("Cadastrado com sucesso!");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("Pressione qualquer tecla para voltar");
+            Console.ReadKey();
         }
     }
 }

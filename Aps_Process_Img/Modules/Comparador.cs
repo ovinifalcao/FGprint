@@ -39,16 +39,16 @@ namespace Aps_Process_Img.Modules
             return SomaSemelhancas;
         }
 
-        public static string CompararImagem(List<Tuple<string, int>> PrioridadePorHistograma, byte[,] DigitalComparar, List<Models.Usuario> UsuariosCadastrados)
+        public static Models.Usuario CompararImagem(List<Tuple<string, int>> PrioridadePorHistograma, byte[,] DigitalComparar, List<Models.Usuario> UsuariosCadastrados)
         {
             var FinalList = ReordenarLista(PrioridadePorHistograma, UsuariosCadastrados);
-            var ResultadoDaComparacao = new List<Tuple<string, int>>();  
+            var ResultadoDaComparacao = new List<Tuple<Models.Usuario, int>>();  
 
             foreach (Models.Usuario U in FinalList)
             {
                 var ing = InserteccionarMatrizes(BinarizarImagem(U.ImpressaoDigital), BinarizarImagem(DigitalComparar));
-                if (ing >= ((DigitalComparar.GetLength(0) * DigitalComparar.GetLength(1)) * 0.85)) ResultadoDaComparacao.Add(new Tuple<string, int>(U.NomeUsuario, ing));
-                if (ing >= ((DigitalComparar.GetLength(0) * DigitalComparar.GetLength(1)) * 0.95)) return U.NomeUsuario;
+                if (ing >= ((DigitalComparar.GetLength(0) * DigitalComparar.GetLength(1)) * 0.85)) ResultadoDaComparacao.Add(new Tuple<Models.Usuario, int>(U, ing));
+                if (ing >= ((DigitalComparar.GetLength(0) * DigitalComparar.GetLength(1)) * 0.95)) return U;
             }
 
             if (ResultadoDaComparacao.Count > 0)
@@ -69,7 +69,8 @@ namespace Aps_Process_Img.Modules
                     select new Models.Usuario
                     {
                         NomeUsuario = U.NomeUsuario,
-                        ImpressaoDigital = U.ImpressaoDigital
+                        ImpressaoDigital = U.ImpressaoDigital,
+                        CategoriaUser = U.CategoriaUser
                     }).ToList();
         }
 
